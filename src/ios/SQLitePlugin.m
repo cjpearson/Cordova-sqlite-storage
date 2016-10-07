@@ -523,6 +523,12 @@
 #endif
 }
 
+- (void)onMemoryWarning {
+    for (NSString* key in [openDBs allKeys]) {
+        sqlite3_db_release_memory([[openDBs objectForKey:key] pointerValue]);
+    }
+}
+
 +(NSDictionary *)captureSQLiteErrorFromDb:(struct sqlite3 *)db
 {
     int code = sqlite3_errcode(db);

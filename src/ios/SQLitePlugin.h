@@ -27,8 +27,8 @@ typedef int WebSQLError;
     NSMutableDictionary *openDBs;
 }
 
-@property (nonatomic, copy) NSMutableDictionary *openDBs;
-@property (nonatomic, copy) NSMutableDictionary *appDBPaths;
+@property (nonatomic, strong) NSMutableDictionary *openDBs;
+@property (nonatomic, strong) NSMutableDictionary *appDBPaths;
 
 // Self-test
 -(void) echoStringValue: (CDVInvokedUrlCommand*)command;
@@ -37,10 +37,6 @@ typedef int WebSQLError;
 -(void) open: (CDVInvokedUrlCommand*)command;
 -(void) close: (CDVInvokedUrlCommand*)command;
 -(void) delete: (CDVInvokedUrlCommand*)command;
-
--(void) openNow: (CDVInvokedUrlCommand*)command;
--(void) closeNow: (CDVInvokedUrlCommand*)command;
--(void) deleteNow: (CDVInvokedUrlCommand*)command;
 
 // Batch processing interface
 -(void) backgroundExecuteSqlBatch: (CDVInvokedUrlCommand*)command;

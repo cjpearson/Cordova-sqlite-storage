@@ -29,6 +29,8 @@
     # XXX TBD this will be renamed and include some more per-db state.
     txLocks = {}
 
+    connectionMap = {}
+
 ## utility functions:
 
     # Errors returned to callbacks must conform to `SqlError` with a code and message.
@@ -211,10 +213,10 @@
       else
         console.log 'OPEN database: ' + @dbname
 
-        opensuccesscb = =>
+        opensuccesscb = (conn) =>
           # NOTE: the db state is NOT stored (in @openDBs) if the db was closed or deleted.
           console.log 'OPEN database: ' + @dbname + ' - OK'
-
+          connectionMap[@dbname] = conn
           #if !@openDBs[@dbname] then call open error cb, and abort pending tx if any
           if !@openDBs[@dbname]
             console.log 'database was closed during open operation'
@@ -501,7 +503,7 @@
 
         return
 
-      cordova.exec mycb, null, "SQLitePlugin", "backgroundExecuteSqlBatch", [{dbargs: {dbname: @db.dbname}, executes: tropts}]
+      cordova.exec mycb, null, "SQLitePlugin", "backgroundExecuteSqlBatch", [{connection: connectionMap[@db.dbname], executes: tropts}]
 
       return
 
